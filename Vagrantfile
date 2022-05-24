@@ -3,7 +3,7 @@
 
 #set no parallel to ensure k8s master should up and running first
 ENV['VAGRANT_NO_PARALLEL'] = 'yes'
-count = 1
+NodeCount = 1
 
 Vagrant.configure(2) do |config|
   config.vm.provision "shell", path: "vagrant_scripts/bootstrap.sh"
@@ -24,17 +24,18 @@ Vagrant.configure(2) do |config|
       vb.nested  = true
       vb.cpus    = 2
     end
-    # Synced App Folder
-    config.vm.synced_folder "k8s_deployments/", "/deployments",
+    # Synced Kubernetes Manifest
+    config.vm.synced_folder "kubernetes_manifest/", "/deployments",
       owner: "root", group: "root"
     # Execute script
     node.vm.provision "shell", path: "vagrant_scripts/master.sh"
   end
 
 
-  # Kubernetes Worker Nodes
-  (1..count).each do |i|
+  # Kubernetes Worker Node
+  (1..NodeCount).each do |i|
     config.vm.define "worker#{i}" do |node|
+     # Image to use in this lab ubuntu/focal64 or ubuntu/bionic64
       node.vm.box               = "ubuntu/bionic64"
       node.vm.hostname          = "worker#{i}.lab.com"
       node.vm.network "private_network", ip: "10.0.0.8#{i}"
@@ -50,6 +51,7 @@ Vagrant.configure(2) do |config|
         v.nested  = true
         v.cpus    = 1
       end
+      # Execute script
       node.vm.provision "shell", path: "vagrant_scripts/worker.sh"
     end
   end
