@@ -11,7 +11,7 @@ def hello_world():
     storage = Storage()
     storage.populate()
     score = storage.score()
-    return "Hello Devops 123-Test, %d!" % score
+    return "Hello Devops 123-26-May, %d!" % score
 
 
 class Storage:

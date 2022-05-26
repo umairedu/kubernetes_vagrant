@@ -3,6 +3,7 @@ image:
   repository: umairedu/flask_demo
   pullPolicy: Always
   tag: "latest"
+  work_dir: "/share/app"
 
 configMap:
   MYSQL_USERNAME: "root"
@@ -80,6 +81,15 @@ tolerations: []
 
 affinity: {}
 
+persistence:
+  enabled: true
+  existingClaim: "share-pvc"
+  storageClass: ""
+  annotations: {}
+  accessModes:
+    - ReadWriteOnce
+  size: 50Mi
+  
 mysql:
   auth:
     rootPassword: password
@@ -89,7 +99,8 @@ mysql:
   primary:
     persistence:
        enabled: true
-       existingClaim: "db-pvc"
+       existingClaim: "data-pvc"
        size: 200Mi
   serviceAccount:
     create: false
+

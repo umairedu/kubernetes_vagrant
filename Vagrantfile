@@ -51,8 +51,12 @@ Vagrant.configure(2) do |config|
         v.nested  = true
         v.cpus    = 1
       end
+      # Synced Project Folder
+      config.vm.synced_folder "project/", "/share/app",
+      owner: "root", group: "root"
       # Execute script
       node.vm.provision "shell", path: "vagrant_scripts/worker.sh"
+      node.vm.provision "shell", path: "vagrant_scripts/health_check.sh"
     end
   end
 end

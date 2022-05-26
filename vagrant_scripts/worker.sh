@@ -6,5 +6,5 @@ sshpass -p "kubeadmin" scp -o UserKnownHostsFile=/dev/null -o StrictHostKeyCheck
 bash /joincluster.sh >/dev/null 2>&1
 
 echo "[TASK 2] Create persistent folder for mysql"
-mkdir -p /data/db
-chmod 777 /data/db
+mkdir -p /data
+chmod 777 /data
