@@ -3,11 +3,10 @@ version: 0.2
 phases:
   install:
     commands:
-      - env
       - export CODEBUILD_GIT_SHORT_COMMIT="$(git log -1 --pretty=%h)"
       - export CODEBUILD_GIT_MESSAGE="$(git log -1 --pretty=%B)"
-      - echo "==> CODEBUILD_GIT_SHORT_COMMIT = $CODEBUILD_GIT_SHORT_COMMIT"
-      - echo "==> CODEBUILD_GIT_MESSAGE = $CODEBUILD_GIT_MESSAGE"
+      - echo $CODEBUILD_GIT_SHORT_COMMIT
+      - echo $CODEBUILD_GIT_MESSAGE
   build:
     commands:
-      - # Do nothing
+      - env
