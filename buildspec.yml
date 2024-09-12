@@ -9,7 +9,7 @@ phases:
       - echo $CODEBUILD_GIT_MESSAGE
       - echo "Fetching the latest changes..."
       - git fetch origin
-      - echo "Detecting changed files between this commit and the previous commit..."
+      - git diff --name-only HEAD^ HEAD
       - git diff --name-only HEAD~ HEAD > changed_files.txt
       - cat changed_files.txt
   build:
