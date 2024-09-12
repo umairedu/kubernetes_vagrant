@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 NODENAME=$(hostname -s)
 
 echo "[TASK 1] Pull required containers"
