@@ -7,10 +7,8 @@ phases:
       - export CODEBUILD_GIT_MESSAGE="$(git log -1 --pretty=%B)"
       - echo $CODEBUILD_GIT_SHORT_COMMIT
       - echo $CODEBUILD_GIT_MESSAGE
-      - echo "Fetching the latest changes..."
       - git fetch origin
-      - git diff --name-only HEAD^ HEAD
-      - git diff --name-only HEAD~ HEAD > changed_files.txt
+      - git diff --name-only $CODEBUILD_RESOLVED_SOURCE_VERSION $CODEBUILD_WEBHOOK_PREV_COMMIT > changed_files.txt
       - cat changed_files.txt
   build:
     commands:
