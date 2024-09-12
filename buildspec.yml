@@ -4,8 +4,10 @@ phases:
   install:
     commands:
       - env
-      - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install >> extras.sh
-      - . ./extras.sh
+      - export CODEBUILD_GIT_SHORT_COMMIT="$(git log -1 --pretty=%h)"
+      - export CODEBUILD_GIT_MESSAGE="$(git log -1 --pretty=%B)"
+      - echo "==> CODEBUILD_GIT_SHORT_COMMIT = $CODEBUILD_GIT_SHORT_COMMIT"
+      - echo "==> CODEBUILD_GIT_MESSAGE = $CODEBUILD_GIT_MESSAGE"
   build:
     commands:
       - # Do nothing
