@@ -10,8 +10,7 @@ phases:
       - echo "Fetching the latest changes..."
       - git fetch origin
       - echo "Detecting changed files between this commit and the previous commit..."
-      - git diff --name-only $CODEBUILD_RESOLVED_SOURCE_VERSION~1 $CODEBUILD_RESOLVED_SOURCE_VERSION > changed_files.txt
-      - echo "Changed files:"
+      - git diff --name-only HEAD~ HEAD > changed_files.txt
       - cat changed_files.txt
   build:
     commands:
