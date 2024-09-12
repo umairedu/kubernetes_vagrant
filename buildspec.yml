@@ -7,6 +7,7 @@ phases:
       - export CODEBUILD_GIT_MESSAGE="$(git log -1 --pretty=%B)"
       - echo $CODEBUILD_GIT_SHORT_COMMIT
       - echo $CODEBUILD_GIT_MESSAGE
+      - git diff-tree --no-commit-id --name-only -r HEAD
       - git fetch origin
       - git diff --name-only $CODEBUILD_RESOLVED_SOURCE_VERSION $CODEBUILD_WEBHOOK_PREV_COMMIT > changed_files.txt
       - cat changed_files.txt
