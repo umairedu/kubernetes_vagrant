@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    commands:
+      - curl -fsSL https://raw.githubusercontent.com/thii/aws-codebuild-extras/master/install >> extras.sh
+      - . ./extras.sh
+  build:
+    commands:
+      - echo "Source Version: $CODEBUILD_SOURCE_VERSION"
+      - echo "Webhook Trigger: $CODEBUILD_WEBHOOK_TRIGGER"
+      - echo "Source Repo URL: $CODEBUILD_SOURCE_REPO_URL"
+      - |
+        if [[ "$CODEBUILD_WEBHOOK_TRIGGER" == "project/"* ]]; then
+          echo "This build was triggered by a pull request event."
+        elif [[ "$CODEBUILD_WEBHOOK_TRIGGER" == "main/"* ]]; then
+          echo "This build was triggered by a push event to the branch."
+        else
+          echo "Unknown trigger event."
+        fi
+
+      - echo "Printing full environment variables for debugging"
+      - env
