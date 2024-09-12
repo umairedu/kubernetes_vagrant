@@ -7,5 +7,3 @@ EXPOSE 3000
 ENTRYPOINT ["python"]
 CMD ["app.py"]
 
-
-
