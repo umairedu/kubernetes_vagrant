@@ -1,29 +1,26 @@
 version: 0.2
 
 phases:
-  install:
+  pre_build:
     commands:
+      - env
+      - cd project/
       - export CODEBUILD_GIT_SHORT_COMMIT="$(git log -1 --pretty=%h)"
       - export CODEBUILD_GIT_MESSAGE="$(git log -1 --pretty=%B)"
       - echo $CODEBUILD_GIT_SHORT_COMMIT
       - echo $CODEBUILD_GIT_MESSAGE
-      - git fetch origin
-      - git diff-tree --no-commit-id --name-only -r HEAD^ HEAD > changed_files.txt
-      - cat changed_files.txt
+      - echo Logging in to Amazon ECR...
+      - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $REPOSITORY_URI
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - echo $COMMIT_HASH
   build:
     commands:
-      - env
-      - echo "Checking if 'project' or 'doc' folders were modified..."
-      - |
-        if grep -q "^project/" changed_files.txt; then
-          echo "Changes detected in the project folder. OK"
-        fi
-      - |
-        if grep -q "^vagrant_scripts/" changed_files.txt; then
-          echo "Changes detected in the vagrant_scripts folder. OK"
-        fi
-      - |
-        if ! grep -q "^project/" changed_files.txt && ! grep -q "^vagrant_scripts/" changed_files.txt; then
-          echo "No changes detected in 'project' or 'doc' folders."
-        fi
-
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - docker build . -t $REPOSITORY_URI/$APP_NAME:$COMMIT_HASH
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker images...
+      - docker push $REPOSITORY_URI/$APP_NAME:$COMMIT_HASH
+      - echo Writing image definitions file...
