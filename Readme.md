@@ -1,4 +1,4 @@
-# Local Kubernetes Environment Using Vagrant
+# Local Kubernetes Cluster with Vagrant
 
 ## Development Issues:
 As we reported developers observing different outputs from the
